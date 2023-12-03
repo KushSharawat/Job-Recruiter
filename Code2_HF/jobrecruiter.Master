@@ -1,0 +1,59 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="jobrecruiter.master.cs" Inherits="Code2_HF.jobrecruiter1" %>
+<%@ Register Src="~/header.ascx" TagName="upper" TagPrefix="Aman" %>
+<%@ Register Src="~/footer.ascx" TagName="Lower" TagPrefix="Aman" %>
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <script src="Menu/jquery.js"></script>
+        <link href="Menu/menu.css" rel="stylesheet" />
+        <script src="Menu/menu.js"></script>
+
+                <div>
+            <table>
+                <tr>
+                    <td>
+                        <aman:upper id="h1" runat="server"></aman:upper>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="menu">
+                            <ul class="menu">
+                                <li><a href="home_jobrecruiter.aspx"><span>Home</span></a></li>
+                                <li><a href="jobpost_jobrecruiter.aspx"><span>Job Post</span></a></li>
+                                <li><a href="jobopening_jobrecruiter.aspx"><span>List of Jobs</span></a></li>
+                                <li><a href="changepassjobrecruiter.aspx"><span>Change Password</span></a></li>
+                                <li><a href="logout.aspx"><span>Logout</span></a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <center>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                        </center>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <aman:lower id="f1" runat="server"></aman:lower>
+                    </td>
+                </tr>
+            </table>
+            
+
+        </div>
+    </form>
+</body>
+</html>

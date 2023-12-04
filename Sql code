@@ -1,0 +1,283 @@
+create database jobseeker
+use jobseeker
+create table tblgender
+(
+gid int primary key identity,
+gname varchar(50)
+)
+
+insert into tblgender(gname)values('male')
+insert into tblgender(gname)values('female')
+insert into tblgender(gname)values('others')
+select*from tblgender
+
+create table tblqualification
+(
+qid int primary key identity,
+qname varchar(50)
+)
+
+insert into tblqualification(qname)values('M.tech')
+insert into tblqualification(qname)values('B.tech')
+insert into tblqualification(qname)values('BCA')
+insert into tblqualification(qname)values('MCA')
+insert into tblqualification(qname)values('Polytecnic')
+insert into tblqualification(qname)values('BBA')
+insert into tblqualification(qname)values('MBA')
+insert into tblqualification(qname)values('Diploma')
+insert into tblqualification(qname)values('Agriculture')
+
+create proc pgender
+as
+begin
+select * from tblgender 
+end
+
+create proc pqualification
+as
+begin
+select * from tblqualification
+end
+
+create table tbladmin
+(
+aid int primary key identity,
+aemail varchar(50),
+apassword varchar(50)
+)
+
+insert into tbladmin(aemail,apassword)values('admin','admin')
+
+create table jobseeker
+(
+jname varchar(50),
+jid int primary key identity,
+jgender int,
+jcontact bigint,
+jemail varchar(50),
+jpassword varchar(50),
+jqualification int,
+jstatus int default 0
+)
+select*from jobseeker
+
+create proc gjobseeker
+as
+begin
+select * from jobseeker
+join tblgender on jobseeker.jgender=tblgender.gid
+join tblqualification on jobseeker.jqualification=tblqualification.qid
+end
+
+create proc gjobseekerone
+@id int
+as
+begin
+select * from jobseeker
+join tblgender on jobseeker.jgender=tblgender.gid
+join tblqualification on jobseeker.jqualification=tblqualification.qid
+where jid=@id
+end
+
+create proc pjobseeker
+@jname varchar(50),
+@jgender int,
+@jcontact bigint,
+@jemail varchar(50),
+@jpassword varchar(50),
+@jqualification int
+as
+begin
+insert into jobseeker(jname,jgender,jcontact,jemail,jpassword,jqualification)
+values(@jname,@jgender,@jcontact,@jemail,@jpassword,@jqualification)
+end
+
+create proc jobseekerlog
+@email varchar(50),
+@pas varchar(50)
+as 
+begin
+select * from jobseeker where jemail=@email and jpassword=@pas and jstatus=0
+end
+
+create proc cpjobseeker
+@id int,
+@pass varchar(50),
+@cpass varchar(50)
+as 
+begin
+update jobseeker set jpassword=@pass where jid=@id and jpassword=@cpass
+end
+
+
+create table jobrecruiter
+(
+rid int primary key identity,
+rtype int,
+rname varchar(50),
+rurl varchar(50),
+rcontact bigint,
+remail varchar(50),
+rpassword varchar(50),
+raddress varchar(50),
+rstatus int default 0
+)
+
+select * from jobrecruiter
+
+create proc pjobrecruiter
+@rtype int,
+@rname varchar(50),
+@rurl varchar(50),
+@rcontact bigint,
+@remail varchar(50),
+@rpassword varchar(50),
+@raddress varchar(50)
+as
+begin
+insert into jobrecruiter(rtype,rname,rurl,rcontact,remail,rpassword,raddress)
+values(@rtype,@rname,@rurl,@rcontact,@remail,@rpassword,@raddress)
+end
+
+
+create table tbltype
+(
+tid int primary key identity,
+tname varchar(50)
+)
+
+insert into tbltype(tname)values('IT')
+insert into tbltype(tname)values('BPO')
+insert into tbltype(tname)values('KPO')
+insert into tbltype(tname)values('Production')
+insert into tbltype(tname)values('Consultancy')
+select*from tbltype
+
+create proc ptype
+as
+begin
+select * from tbltype
+end
+
+create proc gjobrecruiter
+as
+begin
+select * from jobrecruiter
+join tbltype on jobrecruiter.rtype=tbltype.tid
+end
+
+create proc gjobrecruiterone
+@id int
+as
+begin
+select * from jobrecruiter
+join tbltype on jobrecruiter.rtype=tbltype.tid
+where rid=@id
+end
+
+create proc jobrecruiterlog
+@email varchar(50),
+@pas varchar(50)
+as 
+begin
+select * from jobrecruiter where remail=@email and rpassword=@pas and rstatus=0
+end
+
+create proc cpjobrecruiter
+@id int,
+@pass varchar(50),
+@cpass varchar(50)
+as 
+begin
+update jobrecruiter set rpassword=@pass where rid=@id and rpassword=@cpass
+end
+
+
+
+create table tbljobpost
+(
+jid int primary key identity,
+jobRecruiter int,
+jobprofile int,
+minexp int,
+maxexp int,
+minsalary int,
+maxsalary int,
+noofvacancy int
+)
+
+select * from tbljobpost
+
+
+create proc JobPost_Insert
+@jobRecruiter int,
+@jobprofile int,
+@minexp int,
+@maxexp int,
+@minsalary int,
+@maxsalary int,
+@noofvacancy int
+as
+begin
+insert into tbljobpost(jobRecruiter,jobprofile,minexp,maxexp,minsalary,maxsalary,noofvacancy)values(@jobRecruiter,@jobprofile,@minexp,@maxexp,@minsalary,@maxsalary,@noofvacancy)
+end
+
+create proc JobPost_update
+@jid int,
+@jobRecruiter int,
+@jobprofile int,
+@minexp int,
+@maxexp int,
+@minsalary int,
+@maxsalary int,
+@noofvacancy int
+as
+begin
+update tbljobpost set jobRecruiter=@jobRecruiter,jobprofile=@jobprofile,minexp=@minexp,maxexp=@maxexp,minsalary=@minsalary,maxsalary=@maxsalary,noofvacancy=@noofvacancy
+where jid=@jid
+end
+
+create table tbljobprofiles
+(
+jpid int primary key identity,
+jpname varchar(50)
+)
+
+select * from tbljobprofiles
+
+
+insert into tbljobprofiles(jpname)values('.net')
+insert into tbljobprofiles(jpname)values('Java')
+insert into tbljobprofiles(jpname)values('PHP')
+insert into tbljobprofiles(jpname)values('Python')
+insert into tbljobprofiles(jpname)values('Angular')
+
+create proc pjobprofile
+as
+begin
+select * from tbljobpost
+join jobrecruiter on tbljobpost.jobrecruiter=jobrecruiter.rid
+join tbljobprofiles on tbljobpost.jobprofile=tbljobprofiles.jpid
+end
+
+create proc pojobprofile
+@id int
+as
+begin
+select * from tbljobpost
+join jobrecruiter on tbljobpost.jobrecruiter=jobrecruiter.rid
+join tbljobprofiles on tbljobpost.jobprofile=tbljobprofiles.jpid where rid=@id
+end
+
+create proc delt
+@del int
+as
+begin
+delete from tbljobpost where jid=@del
+end
+
+create proc pjobprofil
+as
+begin
+select * from tbljobpost where jobprofile=jpname
+end

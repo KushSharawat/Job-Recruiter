@@ -1,0 +1,18 @@
+﻿body {
+    background-color: aqua;
+    height: 950px;
+    width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family:Bahnschrift;
+    font-size:4rem;
+    
+}
+
+div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left:50px;
+}

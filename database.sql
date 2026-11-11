@@ -1,4 +1,5 @@
 create database jobseeker
+GO
 use jobseeker
 create table tblgender
 (
@@ -27,17 +28,21 @@ insert into tblqualification(qname)values('MBA')
 insert into tblqualification(qname)values('Diploma')
 insert into tblqualification(qname)values('Agriculture')
 
+GO
 create proc pgender
 as
 begin
 select * from tblgender 
 end
+GO
 
+GO
 create proc pqualification
 as
 begin
 select * from tblqualification
 end
+GO
 
 create table tbladmin
 (
@@ -61,6 +66,7 @@ jstatus int default 0
 )
 select*from jobseeker
 
+GO
 create proc gjobseeker
 as
 begin
@@ -68,7 +74,9 @@ select * from jobseeker
 join tblgender on jobseeker.jgender=tblgender.gid
 join tblqualification on jobseeker.jqualification=tblqualification.qid
 end
+GO
 
+GO
 create proc gjobseekerone
 @id int
 as
@@ -78,7 +86,9 @@ join tblgender on jobseeker.jgender=tblgender.gid
 join tblqualification on jobseeker.jqualification=tblqualification.qid
 where jid=@id
 end
+GO
 
+GO
 create proc pjobseeker
 @jname varchar(50),
 @jgender int,
@@ -91,7 +101,9 @@ begin
 insert into jobseeker(jname,jgender,jcontact,jemail,jpassword,jqualification)
 values(@jname,@jgender,@jcontact,@jemail,@jpassword,@jqualification)
 end
+GO
 
+GO
 create proc jobseekerlog
 @email varchar(50),
 @pas varchar(50)
@@ -99,7 +111,9 @@ as
 begin
 select * from jobseeker where jemail=@email and jpassword=@pas and jstatus=0
 end
+GO
 
+GO
 create proc cpjobseeker
 @id int,
 @pass varchar(50),
@@ -108,6 +122,7 @@ as
 begin
 update jobseeker set jpassword=@pass where jid=@id and jpassword=@cpass
 end
+GO
 
 
 create table jobrecruiter
@@ -125,6 +140,7 @@ rstatus int default 0
 
 select * from jobrecruiter
 
+GO
 create proc pjobrecruiter
 @rtype int,
 @rname varchar(50),
@@ -138,6 +154,7 @@ begin
 insert into jobrecruiter(rtype,rname,rurl,rcontact,remail,rpassword,raddress)
 values(@rtype,@rname,@rurl,@rcontact,@remail,@rpassword,@raddress)
 end
+GO
 
 
 create table tbltype
@@ -153,19 +170,24 @@ insert into tbltype(tname)values('Production')
 insert into tbltype(tname)values('Consultancy')
 select*from tbltype
 
+GO
 create proc ptype
 as
 begin
 select * from tbltype
 end
+GO
 
+GO
 create proc gjobrecruiter
 as
 begin
 select * from jobrecruiter
 join tbltype on jobrecruiter.rtype=tbltype.tid
 end
+GO
 
+GO
 create proc gjobrecruiterone
 @id int
 as
@@ -174,7 +196,9 @@ select * from jobrecruiter
 join tbltype on jobrecruiter.rtype=tbltype.tid
 where rid=@id
 end
+GO
 
+GO
 create proc jobrecruiterlog
 @email varchar(50),
 @pas varchar(50)
@@ -182,7 +206,9 @@ as
 begin
 select * from jobrecruiter where remail=@email and rpassword=@pas and rstatus=0
 end
+GO
 
+GO
 create proc cpjobrecruiter
 @id int,
 @pass varchar(50),
@@ -191,6 +217,7 @@ as
 begin
 update jobrecruiter set rpassword=@pass where rid=@id and rpassword=@cpass
 end
+GO
 
 
 
@@ -209,6 +236,7 @@ noofvacancy int
 select * from tbljobpost
 
 
+GO
 create proc JobPost_Insert
 @jobRecruiter int,
 @jobprofile int,
@@ -221,7 +249,9 @@ as
 begin
 insert into tbljobpost(jobRecruiter,jobprofile,minexp,maxexp,minsalary,maxsalary,noofvacancy)values(@jobRecruiter,@jobprofile,@minexp,@maxexp,@minsalary,@maxsalary,@noofvacancy)
 end
+GO
 
+GO
 create proc JobPost_update
 @jid int,
 @jobRecruiter int,
@@ -236,6 +266,7 @@ begin
 update tbljobpost set jobRecruiter=@jobRecruiter,jobprofile=@jobprofile,minexp=@minexp,maxexp=@maxexp,minsalary=@minsalary,maxsalary=@maxsalary,noofvacancy=@noofvacancy
 where jid=@jid
 end
+GO
 
 create table tbljobprofiles
 (
@@ -252,6 +283,7 @@ insert into tbljobprofiles(jpname)values('PHP')
 insert into tbljobprofiles(jpname)values('Python')
 insert into tbljobprofiles(jpname)values('Angular')
 
+GO
 create proc pjobprofile
 as
 begin
@@ -259,7 +291,9 @@ select * from tbljobpost
 join jobrecruiter on tbljobpost.jobrecruiter=jobrecruiter.rid
 join tbljobprofiles on tbljobpost.jobprofile=tbljobprofiles.jpid
 end
+GO
 
+GO
 create proc pojobprofile
 @id int
 as
@@ -268,16 +302,21 @@ select * from tbljobpost
 join jobrecruiter on tbljobpost.jobrecruiter=jobrecruiter.rid
 join tbljobprofiles on tbljobpost.jobprofile=tbljobprofiles.jpid where rid=@id
 end
+GO
 
+GO
 create proc delt
 @del int
 as
 begin
 delete from tbljobpost where jid=@del
 end
+GO
 
+GO
 create proc pjobprofil
 as
 begin
 select * from tbljobpost where jobprofile=jpname
 end
+GO
